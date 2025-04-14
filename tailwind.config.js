@@ -1,29 +1,71 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    darkMode: ["class"],
     content: ["./src/**/*.{html,js,jsx,tsx}"],
     theme: {
-      extend: {
-        colors: {
-          base1: '#2D336B', // 기본
-          base2: '#7886C7', // 기본 2
-          base3: '#A9B5DF', // 기본 3
-  
-          error: '#C13515',   // 에러 1
-          error2: '#FEF8F6',  // 에러 2
-  
-          transparent1: '#9099AC',     // 투명1
-          transparent2: '#9099ACB8',   // 투명2 (47% → B8)
-          transparent3: '#7E8798',     // 투명3
-  
-          gray1: '#E7E7E7', // 회색조1
-          gray2: '#B0B0B0', // 회색조2
-          gray3: '#717171', // 회색조3
-  
-          code: '#1F2228',   // 코드
-          white: '#000000',  // 흰색 (← 사실 검정색임. 이름 수정 추천)
-        },
-      },
+    	extend: {
+    		colors: {
+    			base1: '#2D336B',
+    			base2: '#7886C7',
+    			base3: '#A9B5DF',
+    			error: '#C13515',
+    			error2: '#FEF8F6',
+    			transparent1: '#9099AC',
+    			transparent2: '#9099ACB8',
+    			transparent3: '#7E8798',
+    			gray1: '#E7E7E7',
+    			gray2: '#B0B0B0',
+    			gray3: '#717171',
+    			code: '#1F2228',
+    			white: '#000000',
+    			background: 'hsl(var(--background))',
+    			foreground: 'hsl(var(--foreground))',
+    			card: {
+    				DEFAULT: 'hsl(var(--card))',
+    				foreground: 'hsl(var(--card-foreground))'
+    			},
+    			popover: {
+    				DEFAULT: 'hsl(var(--popover))',
+    				foreground: 'hsl(var(--popover-foreground))'
+    			},
+    			primary: {
+    				DEFAULT: 'hsl(var(--primary))',
+    				foreground: 'hsl(var(--primary-foreground))'
+    			},
+    			secondary: {
+    				DEFAULT: 'hsl(var(--secondary))',
+    				foreground: 'hsl(var(--secondary-foreground))'
+    			},
+    			muted: {
+    				DEFAULT: 'hsl(var(--muted))',
+    				foreground: 'hsl(var(--muted-foreground))'
+    			},
+    			accent: {
+    				DEFAULT: 'hsl(var(--accent))',
+    				foreground: 'hsl(var(--accent-foreground))'
+    			},
+    			destructive: {
+    				DEFAULT: 'hsl(var(--destructive))',
+    				foreground: 'hsl(var(--destructive-foreground))'
+    			},
+    			border: 'hsl(var(--border))',
+    			input: 'hsl(var(--input))',
+    			ring: 'hsl(var(--ring))',
+    			chart: {
+    				'1': 'hsl(var(--chart-1))',
+    				'2': 'hsl(var(--chart-2))',
+    				'3': 'hsl(var(--chart-3))',
+    				'4': 'hsl(var(--chart-4))',
+    				'5': 'hsl(var(--chart-5))'
+    			}
+    		},
+    		borderRadius: {
+    			lg: 'var(--radius)',
+    			md: 'calc(var(--radius) - 2px)',
+    			sm: 'calc(var(--radius) - 4px)'
+    		}
+    	}
     },
-    plugins: [],
+    plugins: [require("tailwindcss-animate")],
   };
   
