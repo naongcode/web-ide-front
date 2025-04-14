@@ -4,6 +4,7 @@ function App() {
 
   return (
     <>
+    <div className='bg-error'>hello</div>
     </>
   )
 }
