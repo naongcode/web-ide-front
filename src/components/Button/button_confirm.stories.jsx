@@ -1,19 +1,23 @@
 import React from 'react';
-import { Button } from './button'; // 실제 컴포넌트 경로로 변경해줘
+import { Button } from './button';
 
 export default {
   title: 'Components/Button/Confirm',
   component: Button,
-  tags: ['autodocs'], // 최신 스토리북에서는 docs 자동화용
+  tags: ['autodocs'],
   argTypes: {
+
+    // 버튼 타입 선택
     type: {
       control:'select',
       options:["submit","confirm"]
     },
+    // 버튼 동작 선택
     variant: {
       control: 'select',
-      options: ["default", 'hover', 'click','disabled'],
+      options: ["default", 'hover', 'click','disabled','loading'],
     },
+    // 버튼 사이즈 선택
     size: {
       control: 'select',
       options: ['default','sm','lg'],
