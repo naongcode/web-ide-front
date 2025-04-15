@@ -1,19 +1,25 @@
 import React from 'react';
-import { Button } from './button'; // 실제 컴포넌트 경로로 변경해줘
+import { Button } from './button';
 
 export default {
   title: 'Components/Button/Submit',
   component: Button,
-  tags: ['autodocs'], // 최신 스토리북에서는 docs 자동화용
+  tags: ['autodocs'],
   argTypes: {
+
+    // 버튼 타입 선택
     type: {
       control:'select',
       options:["submit","confirm"]
     },
+
+    // 버튼 동작 선택
     variant: {
       control: 'select',
       options: ["default", 'hover', 'click','disabled'],
     },
+
+    // 버튼 사이즈 선택
     size: {
       control: 'select',
       options: ['default','sm','lg'],
@@ -55,6 +61,8 @@ export const Loading = Template.bind({});
 Loading.args = {
   type:"submit",
   variant: 'loading',
+
+  // 로딩 중을 위한 컴포넌트
   children: (
     <div className="flex gap-1 items-center justify-center">
       <span className="w-2 h-2 rounded-full bg-white animate-bounce [animation-delay:-0.3s]" />
