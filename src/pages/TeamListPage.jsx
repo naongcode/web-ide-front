@@ -22,7 +22,7 @@ export default function TeamListPage() {
   useEffect(() => {
     const fetchGroupListAsync = async () => {
       try {
-        const array = await getTeamList(tier); // 사용자의 티어에 맞는 팀 목록을 비동기적으로 가져옵니다.
+        const array = await getTeamList(); // 사용자의 티어에 맞는 팀 목록을 비동기적으로 가져옵니다.
         setTeams(array); // 가져온 팀 목록을 상태에 업데이트합니다.
         console.log(array); // 성공적으로 가져온 팀 목록을 콘솔에 로그로 출력합니다.
       } catch (error) {
@@ -30,7 +30,7 @@ export default function TeamListPage() {
       }
     };
     fetchGroupListAsync();
-  }, [tier]);
+  }, []);
 
   // 코드 설명: handleChange 함수는 input 요소의 변경을 감지하고, 해당 변경된 값을 form 상태에 업데이트합니다.
   const handleChange = (e) => {

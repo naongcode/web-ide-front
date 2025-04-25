@@ -31,7 +31,11 @@ export default defineConfig({
       '/api': {
         target: 'http://43.202.161.69:8080/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => {
+          const newPath = path.replace(/^\/api/, ''); // /api 제거
+          console.log("Rewritten API path:", newPath); // 디버그: /api 제거된 경로
+          return newPath;
+        },
         // 백엔드 서버에는 /api 빼고 전달
       },
     },

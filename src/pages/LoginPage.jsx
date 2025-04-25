@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { userDataStore } from '@/store/userDataStore';
 import { getUserData, login } from '@/utils/userManage';
+import { saveToken } from '@/utils/auth';
 
 function Form({ children }) {
   return (
@@ -110,6 +111,7 @@ export default function LoginPage() {
   const idRef = useRef(null);
   const passwordRef = useRef(null);
   const [modal_open, set_modal_open] = useState(false);
+
   const handleLogin = async () => {
     const newMessages = { id: null, password: null };
     let hasError = false;
@@ -135,12 +137,29 @@ export default function LoginPage() {
       else if (newMessages.password) passwordRef.current?.focus();
       return;
     }
-
+    
     try {
       const success = await login(id, password);
-      if (success) {
+      // console.log('✅ login 함수 결과:', success);
+      // console.log('✅ login 함수 결과:', success.token);
+      
+      if (success?.token) {
+        // saveToken(success.token); // ✅ 토큰 저장 
+        // console.log('✅ Token saved:', success.token);
+
+        // JWT 토큰에서 user_id 추출
+        const payload = JSON.parse(atob(success.token.split('.')[1]));
+        const user_id = payload.id || payload.user_id || payload.sub; // user_id 추출
+        if (user_id) {
+          console.log('✅ user_id extracted from token:', user_id);
+          setUserProfile({ ...userDataStore.getState(), user_id }); // user_id 상태에 저장
+        }
+
         const userData = await getUserData();
+        console.log('✅ User Data:', userData);
+
         setUserProfile(userData);
+
         navigate('/');
       } else {
         set_modal_open(true);

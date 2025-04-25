@@ -4,11 +4,12 @@ export const getHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
   };
-
+  // console.log(token);
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+  } else {
+    // console.warn('⚠️ No token found in sessionStorage. Authorization header not set.');
   }
-
   return headers;
 };
 

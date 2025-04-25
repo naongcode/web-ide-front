@@ -12,13 +12,16 @@ export async function login(user_id, password) {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
+
       saveToken(data.token);
-      return true;
+      return { success: true, token: data.token };  // 토큰 반환
+    } else {
+      return { success: false, message: '로그인 실패' };  // 실패 메시지 반환
     }
   } catch (error) {
     console.log(error);
-    return false;
+    return { success: false, message: '로그인 중 에러.' };
   }
 }
 

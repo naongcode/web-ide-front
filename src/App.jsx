@@ -28,7 +28,11 @@ export default function App() {
           index
           element={
             isLoggedIn() ? (
-              <Navigate to={`/team/${team_id}`} replace />
+              team_id ? (
+                <Navigate to={`/team/${team_id}`} replace />
+              ) : (
+                <Navigate to="/groups" replace />
+              )
             ) : (
               <IntroPage />
             )
