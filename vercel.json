@@ -2,8 +2,8 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/ws/(.*)",
-      "destination": "ws://43.202.161.69:8080/ws/$1"
+      "source": "/api/wss/(.*)",
+      "destination": "wss://43.202.161.69:8443/wss/$1"
     },
     {
       "source": "/api/(.*)",
