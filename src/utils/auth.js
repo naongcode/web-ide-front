@@ -33,3 +33,22 @@ export const isLoggedIn = () => {
   if (!token) return false;
   return true;
 };
+
+export const getHeadersWithoutBearer = () => {
+  const token = sessionStorage.getItem('token');
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    console.log('토큰',token)
+    // 'Bearer ' 제거하고 토큰만 사용하려는 경우
+    const tokenWithoutBearer = token.replace('Bearer ', '');
+    headers['Authorization'] = `${tokenWithoutBearer}`;
+  } else {
+    console.log('토큰없음');
+  }
+
+  return headers;
+};
+

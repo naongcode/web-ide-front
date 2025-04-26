@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useModalStore } from "./TeamStore"; // 모달 상태 관리를 위한 훅
 import { Link, useParams } from "react-router-dom"; // URL 파라미터 추출 및 링크 생성을 위한 훅
 import { getTeam, getTeamMembers } from "@/utils/teamManage"; // 팀 정보 및 멤버 목록을 가져오는 함수
-import { getQuestList, createQuest } from "@/utils/questManage"; // 문제 목록을 가져오거나 새로운 문제를 생성하는 함수
+import { getQuestList, createQuest} from "@/utils/questManage"; // 문제 목록을 가져오거나 새로운 문제를 생성하는 함수
 import ChatBox from "@/components/ChatBox"; // 채팅 박스 컴포넌트
+import { userDataStore } from "@/store/userDataStore";
 
 export default function TeamMainPage() {
   const { isOpen, toggle } = useModalStore(); // 모달 상태 및 토글 함수
+  const { nickname } = userDataStore();
+  const { team_id } = useParams(); // URL에서 team_id 추출
 
   const [form, setForm] = useState({
     team_id: "",
@@ -18,7 +21,6 @@ export default function TeamMainPage() {
   }); // 문제 생성 폼 상태
 
   const [quests, setQuests] = useState([]); // 문제 목록 상태
-  const { team_id } = useParams(); // URL에서 team_id 추출
   const [team, setTeam] = useState(null); // 팀 정보 상태
   const [members, setMembers] = useState([]); // 팀 멤버 목록 상태
 
@@ -106,7 +108,8 @@ export default function TeamMainPage() {
     try {
       const success = await createQuest(form); // 새로운 문제를 생성하는 함수 호출
       if (success) {
-        await fetchQuestList(); // 문제 목록을 새로 가져옴
+        const updatedQuests = await getQuestList(team_id);
+        setQuests(updatedQuests);
         setForm({
           team_id: "",
           quest_name: "",
@@ -119,14 +122,14 @@ export default function TeamMainPage() {
       } else {
         throw new Error("문제 생성 실패"); // 문제 생성 실패 시 오류 발생
       }
-      toggle(); // 모달 토글
+      // toggle();
     } catch (error) {
       alert(error.message); // 오류 메시지 경고
     }
   }
 
   //함수
-  function CreateQuestModal(form, handleChange, handleCreateQuest) {
+  function CreateQuestModal({ form, handleChange, handleCreateQuest }) {
     const { toggle } = useModalStore();
     const Section = ({ title, children }) => (
       <div className="mb-6 p-4 border border-transparent3 rounded-lg bg-white">
@@ -259,7 +262,7 @@ export default function TeamMainPage() {
         </div>
         {/*채팅*/}
         <div>
-          <ChatBox userId="" nickname="" team_id={team_id} />
+          <ChatBox nickname={nickname} team_id={team?.team_id} />
         </div>
       </div>
     </>

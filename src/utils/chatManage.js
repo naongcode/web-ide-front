@@ -1,9 +1,11 @@
+import { getHeadersWithoutBearer } from "./auth";
+
 let socket = null;
 // 연결 시작
-export const connectChatSocket = (token, onMessage) => {
+export const connectChatSocket = (team_id, onMessage) => {
   if (socket && socket.readyState === WebSocket.OPEN) return;
 
-  socket = new WebSocket(`/api/ws://ws/chat?token=${token}`);
+  socket = new WebSocket('ws://43.202.161.69:8080/ws/chat');
 
   socket.onopen = () => {
     console.log('🟢 WebSocket 연결됨');
@@ -45,12 +47,21 @@ export const disconnectChatSocket = () => {
   }
 };
 
+
+
+
+
 //채팅 검색
-export async function searchCahtMessages(teamId, keyword) {
+export async function searchChatMessages(teamId, keyword) {
   try {
     const res = await fetch(
-      `/api/chat/search?teamId=${teamId}&keyword=${encodeURIComponent(keyword)}`
+      `/api/chat/search?teamId=${teamId}&keyword=${encodeURIComponent(keyword)}`,
+      {
+        headers: headers,
+      }
     );
+    console.log('Request Headers:', getHeadersWithoutBearer());
+
     if (!res.ok) throw new Error('search false');
 
     const data = await res.json();
@@ -61,10 +72,17 @@ export async function searchCahtMessages(teamId, keyword) {
   }
 }
 
-//채팅 조회
-export async function getChatHistory(teamId) {
+//채팅 기록
+export async function getChatHistory(teamId, headers) {
   try {
-    const res = await fetch(`/api/chat/history?teamId=${teamId}`);
+    console.log('Request Headers:', headers);
+
+    const res = await fetch(`/api/chat/history?teamId=${teamId}`, {
+      headers: headers,
+    });
+
+    console.log('요청', res)
+
     if (!res.ok) throw new Error('chatHistory false');
 
     const data = await res.json();

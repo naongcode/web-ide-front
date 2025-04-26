@@ -3,10 +3,11 @@ import {
   connectChatSocket,
   sendMessageToServer,
   disconnectChatSocket,
-  searchCahtMessages,
+  searchChatMessages,
   getChatHistory,
 } from "@/utils/chatManage";
 import { userDataStore } from "@/store/userDataStore";
+import { getHeadersWithoutBearer } from "@/utils/auth";
 
 export default function ChatBox() {
   //chat sanding
@@ -15,25 +16,34 @@ export default function ChatBox() {
   //chat searching
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState([]);
-  const { teamId, nickname, userId } = userDataStore();
-
+  const { team_id, nickname, user_id } = userDataStore();
+  
   const user = {
-    user_id: userId,
+    user_id: user_id,
     nickname: nickname,
-    team_id: teamId,
+    team_id: team_id,
   };
+  console.log(team_id);
 
   useEffect(() => {
-    if (!teamId) return;
+    if (!team_id) return;
     // 1. 채팅 내역 + webSocket 연결
     async function initChat() {
       try {
-        const history = await getChatHistory(teamId);
-        setMessages(history);
+        console.log('📡 팀 페이지 입장, 웹소켓 연결 시도 중...');
 
-        connectChatSocket(teamId, (msg) => {
+        connectChatSocket(team_id, (msg) => {
           setMessages((prev) => [...prev, msg]);
         });
+
+        const headers = getHeadersWithoutBearer();
+
+        // 1초 뒤에 채팅 내역 가져오기
+        setTimeout(async () => {
+          const history = await getChatHistory(team_id, headers);
+          setMessages(history);
+        }, 1000);
+
       } catch (err) {
         console.error("초기 채팅 로딩 실패:", err);
       }
@@ -41,9 +51,9 @@ export default function ChatBox() {
     initChat();
 
     return () => {
-      disconnectChatSocket();
+      // disconnectChatSocket();
     };
-  }, [teamId]);
+  }, [team_id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +70,7 @@ export default function ChatBox() {
 
   const handleSearch = async () => {
     if (!keyword.trim()) return;
-    const data = await searchCahtMessages(teamId, keyword);
+    const data = await searchChatMessages(team_id, keyword);
     setResults(data);
   };
 
